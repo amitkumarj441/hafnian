@@ -36,7 +36,13 @@ class TypeMock(type):
 
 MOCK_MODULES = [
     'numpy',
-    'ctypes'
+    'numpy.dtype',
+    'scipy',
+    'scipy.special',
+    'scipy.optimize',
+    'scipy.stats',
+    'cython',
+    'thewalrus.libwalrus'
     ]
 
 mock = Mock()
@@ -63,8 +69,34 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinxcontrib.bibtex',
     'edit_on_github',
-    'nbsphinx'
+    'nbsphinx',
+    'breathe',
+    'exhale'
 ]
+
+# Setup the breathe extension
+breathe_projects = {
+    "libwalrus C++": "./doxyoutput/xml"
+}
+
+breathe_default_project = "libwalrus C++"
+breathe_domain_by_extension = {"hpp" : "cpp"}
+
+# Setup the exhale extension
+exhale_args = {
+    # These arguments are required
+    "containmentFolder":     "./libwalrus_cpp_api",
+    "rootFileName":          "library_root.rst",
+    "rootFileTitle":         "C++ Library API",
+    "doxygenStripFromPath":  "..",
+    # Suggested optional arguments
+    "createTreeView":        True,
+    # TIP: if using the sphinx-bootstrap-theme, you need
+    # "treeViewIsBootstrap": True,
+    "exhaleExecutesDoxygen": True,
+    "exhaleDoxygenStdin":    "INPUT = ../include/stdafx.h ../include/libwalrus.hpp ../include/version.hpp ../include/eigenvalue_hafnian.hpp ../include/hafnian_approx.hpp ../include/recursive_hafnian.hpp ../include/repeated_hafnian.hpp  ../include/torontonian.hpp ../include/permanent.hpp ../include/hermite_multidimensional.hpp",
+    # "exhaleUseDoxyfile": True
+}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates', 'xanadu_theme']
@@ -78,8 +110,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'Hafnian'
-copyright = '2018, Xanadu Quantum Technologies Inc'
+project = 'The Walrus'
+copyright = '2019, Xanadu Quantum Technologies Inc'
 author = 'Xanadu Inc.'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -87,8 +119,8 @@ author = 'Xanadu Inc.'
 # built documents.
 #
 # The full version, including alpha/beta/rc tags.
-import hafnian
-release = hafnian.version()
+import thewalrus
+release = thewalrus.version()
 
 # The short X.Y version.
 version = re.match(r'^(\d+\.\d+)', release).expand(r'\1')
@@ -115,11 +147,11 @@ exclude_patterns = ['_build']
 #default_role = None
 
 # If true, '()' will be appended to :func: etc. cross-reference text.
-#add_function_parentheses = True
+add_function_parentheses = True
 
 # If true, the current module name will be prepended to all description
 # unit titles (such as .. function::).
-#add_module_names = True
+add_module_names = False
 
 # If true, sectionauthor and moduleauthor directives will be shown in the
 # output. They are ignored by default.
@@ -254,7 +286,7 @@ html_sidebars = {
 #html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'hafniandoc'
+htmlhelp_basename = 'thewalrusdoc'
 
 # # -- Xanadu theme ---------------------------------------------------------
 html_theme = 'xanadu_theme'
@@ -270,7 +302,7 @@ html_theme_options = {
     # "index_template": "special_index.html",
 
     # Set the name of the project to appear in the left sidebar.
-    "project_nav_name": "Hafnian",
+    "project_nav_name": "The Walrus",
 
     # Set your Disqus short name to enable comments
     # "disqus_comments_shortname": "my_disqus_comments_short_name",
@@ -292,107 +324,5 @@ html_theme_options = {
     # "projectlink": "http://myproject.url",
 }
 
-edit_on_github_project = 'XanaduAI/hafnian'
+edit_on_github_project = 'XanaduAI/thewalrus'
 edit_on_github_branch = 'master/doc'
-
-# -- Options for LaTeX output ---------------------------------------------
-
-latex_elements = {
-# The paper size ('letterpaper' or 'a4paper').
-    'papersize': 'letterpaper',
-
-# The font size ('10pt', '11pt' or '12pt').
-    'pointsize': '10pt',
-
-# Additional stuff for the LaTeX preamble.
-    'preamble': "\\input{macros}\n",
-
-# Latex figure (float) alignment
-#'figure_align': 'htbp',
-}
-
-latex_additional_files = ['macros.tex']
-
-# Grouping the document tree into LaTeX files. List of tuples
-# (source start file, target name, title,
-#  author, documentclass [howto, manual, or own class]).
-latex_documents = [
-    (master_doc, 'hafnian.tex', 'Hafnian',
-     'Xanadu Quantum Technologies Inc.', 'manual'),
-]
-
-# The name of an image file (relative to this directory) to place at the top of
-# the title page.
-#latex_logo = None
-
-# For "manual" documents, if this is true, then toplevel headings are parts,
-# not chapters.
-#latex_use_parts = False
-
-# If true, show page references after internal links.
-#latex_show_pagerefs = False
-
-# If true, show URL addresses after external links.
-#latex_show_urls = False
-
-# Documents to append as an appendix to all manuals.
-#latex_appendices = []
-
-# If false, no module index is generated.
-#latex_domain_indices = True
-
-
-# -- Options for manual page output ---------------------------------------
-
-# One entry per manual page. List of tuples
-# (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, 'hafnian', 'Hafnian',
-     [author], 1)
-]
-
-# If true, show URL addresses after external links.
-#man_show_urls = False
-
-
-# -- Options for Texinfo output -------------------------------------------
-
-# Grouping the document tree into Texinfo files. List of tuples
-# (source start file, target name, title, author,
-#  dir menu entry, description, category)
-texinfo_documents = [
-    (master_doc, 'hafnian', 'Hafnian',
-     author, 'hafnian', 'One line description of project.',
-     'Miscellaneous'),
-]
-
-# Documents to append as an appendix to all manuals.
-#texinfo_appendices = []
-
-# If false, no module index is generated.
-#texinfo_domain_indices = True
-
-# How to display URL addresses: 'footnote', 'no', or 'inline'.
-#texinfo_show_urls = 'footnote'
-
-# If true, do not generate a @detailmenu in the "Top" node's menu.
-#texinfo_no_detailmenu = False
-
-
-#============================================================
-
-# the order in which autodoc lists the documented members
-autodoc_member_order = 'bysource'
-
-# inheritance_diagram graphviz attributes
-inheritance_node_attrs = dict(color='lightskyblue1', style='filled')
-
-# TEST: latex macros in Sphinx
-#imgmath_latex_preamble = '\\input{macros}\n'  # can not find the file
-imgmath_latex_preamble = ''
-with open('macros.tex', 'r') as f:
-    for macro in f:
-        # used when building latex and pdf versions
-        latex_elements['preamble'] += macro + '\n'
-        # used when building html version
-        imgmath_latex_preamble += macro + '\n'

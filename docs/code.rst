@@ -1,19 +1,36 @@
-Code documentation and overiew
-===============================
+Overview
+========
 
-The Hafnian library contains three components:
+The Walrus contains a Python interface, and low-level C++ ``libwalrus`` library.
 
-* The Python interface :mod:`hafnian`. This provides access to the C library hafnian algorithms through Python. See the next page for more details on the Python interface.
+Python interface
+----------------
 
-* The underlying C library, ``lhafnian.so`` for the hafnian calculation of complex matrices, and ``rlhafnian.so``, for the hafnian calculation of real matrices.
+* The :mod:`thewalrus` Python interface provides access to various highly optimized hafnian, permanent, and torontonian algorithms
 
-  - If you would like to access the C library directly, download the source code and navigate to the ``src`` directory. The C library can be installed by running
+* The :mod:`thewalrus.quantum` submodule provides access to various utility functions that act on Gaussian quantum states
 
-    .. code-block:: bash
+* The :mod:`thewalrus.samples` submodule provides access to algorithms to sample from the hafnian or the torontonian of Gaussian quantum states
 
-      $ make library
-      $ make rlibrary
+* The :mod:`thewalrus.reference` submodule provides access to pure-Python reference implementations of the hafnian, loop hafnian, and torontonian
 
-    See the file :download:`timing.c <../src/timing.c>` for an example of how the hafnian library can be accessed directly from C code.
 
-* In addition, two auxiallary Octave functions are provided: :download:`octave/hafnian.m <../octave/hafnian.m>` and :download:`octave/loophafnian.m <../octave/loophafnian.m>`.
+Low-level libraries
+-------------------
+
+The low-level ``libwalrus`` :ref:`C++ library <libwalrus_cpp>` is a header-only library containing various parallelized algorithms for computing the hafnian, loop hafnian, permanent, and Torontonian calculation of complex, real, and integer matrices. This library is used under-the-hood by the Python :mod:`thewalrus` module.
+
+You can also use the ``libwalrus`` library directly in your C++ projects - just ensure that the ``include`` folder is in your include path, and add
+
+.. code-block:: cpp
+
+	#include <libwalrus.hpp>
+
+at the top of your C++ source file. See the file :download:`example.cpp <../examples/example.cpp>`, as well as the corresponding Makefile, for an example of how the ``libwalrus`` library can be accessed directly from C++ code.
+
+Alternatively, if you install the The Walrus package as a python wheel using ``pip``, you can link against the static pre-built library provided.
+
+Octave
+------
+
+In addition, two auxiallary Octave functions are provided: :download:`octave/hafnian.m <../octave/hafnian.m>` and :download:`octave/loophafnian.m <../octave/loophafnian.m>`.
